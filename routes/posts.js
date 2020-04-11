@@ -1,33 +1,96 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
+const { check, validationResult } = require('express-validator'); 
 
+const User = require("../models/User");
+const Post = require("../models/Post");
 
 // @route     GET api/posts
 // @desc      Get all posts
 // @access    Public 
-router.get('/', (req,res) => {
-    res.send('Get all posts');
+router.get('/', async(req,res) => {
+
+    try {
+        const posts = await Post.find({}).sort({date:-1});
+        res.json(posts);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error")
+    }
+   
 });
 
 // @route     POST api/posts
 // @desc      Submit post
 // @access    Private 
-router.post('/', (req,res) => {
-    res.send('Submit a post');
+router.post('/',[auth,
+    check("title","Please add title").not().isEmpty(),
+    check("content","Please add content").not().isEmpty()
+], async (req,res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()});
+    }
+
+    const { title, content } = req.body;
+
+    try {
+        const nwePost = new Post({title,content,user:req.user.id});
+        const post = await nwePost.save();
+        res.json(post); 
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error"); 
+    }
 });
 
 // @route     PUT api/post
 // @desc      Update a  post
 // @access    Private 
-router.put('/', (req,res) => {
-    res.send('Update a post');
+router.put('/:id',auth ,async(req,res) => {
+    const { title, content } = req.body;
+
+    const postFields = {};
+    if(title) postFields.title = title;
+    if(content) postFields.content = content;
+
+    try {
+        let post = await Post.findById(req.params.id);
+        if(!post) return res.status(404).json({msg:"Post not found"});
+        // Make sure user owns post
+        if(post.user.toString() !== req.user.id){
+            return res.status(401).json({msg:"Not authorized"});
+        }
+
+        post = await Post.findByIdAndUpdate(req.params.id,{$set:postFields},{new:true});
+
+        res.json(post)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error"); 
+    }
 });
 
 // @route     DELETE api/post
 // @desc      Delete a post
 // @access    Private 
-router.delete('/', (req,res) => {
-    res.send('Delete a post');
+router.delete('/:id',auth, async (req,res) => {
+    try {
+        let post = await Post.findById(req.params.id);
+        if(!post) return res.status(404).json({msg:"Post not found"});
+        // Make sure user owns post
+        if(post.user.toString() !== req.user.id){
+            return res.status(401).json({msg:"Not authorized"});
+        }
+
+        await Post.findByIdAndRemove(req.params.id);
+
+        res.json({msg:"Post removed"});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error"); 
+    }
 });
 
 
