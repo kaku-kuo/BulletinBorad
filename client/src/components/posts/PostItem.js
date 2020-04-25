@@ -4,16 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import postContext from '../context/post/postContext';
 
 
+
 const PostItem = ({post}) => {
 const PostContext = useContext(postContext);
+
+
 const [dropdown,setDropdown] = useState(false);
 const [dropdownClass,setDropdownClass] = useState('dropdown-content');
 
-const {deletePost,setCurrent} = PostContext;
-const {title,content,author,id} = post;
+const {deletePost} = PostContext;
+const {title,content,name,_id} = post;
+
 
   const handlePostDelete = () => {
-      deletePost(id);
+      deletePost(_id);
   }
 
   const dropdownClick = () => {
@@ -37,7 +41,7 @@ const {title,content,author,id} = post;
             <div className="dropdown">
              <span><FontAwesomeIcon className="threedots" onClick={dropdownClick} icon={['fas', 'ellipsis-h']}/></span>
              <div className={dropdownClass} >
-              <Link to={`/${id}`}><span>Edit</span></Link>
+              <Link to={`/${_id}`}><span>Edit</span></Link>
               <span onClick={handlePostDelete}>Delete</span>
              </div>
             </div>
@@ -46,7 +50,7 @@ const {title,content,author,id} = post;
           <div className="postcontent mt-3">
            <p>{content}</p>
           </div>
-           <span className="author"><FontAwesomeIcon className="mr-1" icon={['fas', 'pen']}/>{author}</span> 
+           <span className="author"><FontAwesomeIcon className="mr-1" icon={['fas', 'pen']}/>{name}</span> 
            <hr className="separateline"/>
 
          </div>

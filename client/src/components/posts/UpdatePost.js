@@ -1,35 +1,35 @@
 import React, { useContext,useState,useEffect } from 'react';
 import postContext from '../context/post/postContext';
 
+
 const UpdatePost = props => {
     
     const PostContext = useContext(postContext);
     
-
-    const {current,updatePost,setCurrent,clearCurrent} = PostContext;
+    const {updatePost,setCurrent,clearCurrent} = PostContext;
 
     const [post , setPost] = useState({
-        id:null,
+        _id:null,
         title:'',
         content:''
     });
-    useEffect(() => {
-         setCurrent(parseInt(props.match.params.id));     
+    useEffect(() => { 
+        setCurrent(props.match.params.id);   
+        // eslint-disable-next-line   
     },[])
 
     useEffect(()=> {
-       if(current !== null){
-           setPost({id:current.id,title:current.title,content:current.content});    
+       if(localStorage.title && localStorage.content && localStorage._id){
+           setPost({_id:localStorage._id,title:localStorage.title,content:localStorage.content});    
        }else{
            setPost({
-            id:null,
+            _id:null,
             title:'',
             content:''
            })
        }
-    },[PostContext,current])
+    },[PostContext])
   
-  console.log(props)
 
     const onChange = e => {
         setPost({...post,[e.target.name]:e.target.value})

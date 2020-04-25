@@ -2,11 +2,11 @@ import React,{useReducer} from 'react';
 import PostContext from './postContext';
 import PostReducer from './postReducer';
 import axios from 'axios';
-import uuid from 'uuid';
 import {GET_POSTS,
     ADD_POST,
     UPDATE_POST,
     DELETE_POST,
+    POST_ERROR,
     SET_CURRENT,
     CLEAR_CURRENT,
     LOADING} from '../type';
@@ -16,58 +16,100 @@ import {GET_POSTS,
 
 const PostState = props => {
   const initialState = {
-      posts:[
-          {
-            id:1,
-            title:'first test post',
-            content:'I am first test post content',
-            author:'kaku'
-          },
-          {
-            id:2,
-            title:'second test post',
-            content:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English.',
-            author:'alan'
-        },
-        {
-            id:3,
-            title:'third test post',
-            content:'I am third test post content',
-            author:'rose'
-        }
-      ],
-      current:null
+      posts:[],
+      error:null
   };  
     
   const [ state, dispatch ] = useReducer(PostReducer,initialState);
  
   // Get all posts
+  const getPosts = async () => {
+      try {
+          const res = await axios('/api/posts');
+          dispatch({type:GET_POSTS,payload:res.data});
+      } catch (err) {
+          dispatch({type:POST_ERROR,payload:err.respnose.msg});
+      }
+  };
+
+  // Add post
+  const addPost = async post => {
+    const config = {
+        headers:{
+         'Content-Type':'application/json'
+        }
+    }  
+       try {
+           const res = await axios.post('/api/posts',post,config);
+           dispatch({type:ADD_POST,payload:res.data});
+       } catch (err) {
+           dispatch({type:POST_ERROR,payload:err.response.msg});
+       }
+  };
 
   // Update post
-  const updatePost = post => {
-       dispatch({type:UPDATE_POST,payload:post});
-  };  
+  const updatePost = async post => {
+    const config = {
+        headers:{
+         'Content-Type':'application/json'
+        }
+    }  
+    try {
+       const res = await axios.put(`api/posts/${post._id}`,post,config) 
+
+        dispatch({type:UPDATE_POST,payload:res.data});
+     } catch (err) {
+        dispatch({type:POST_ERROR,payload:err.response.msg});
+     }
+      
+  }; 
+
   // Delete post
-  const deletePost = id => {
-       dispatch({type:DELETE_POST,payload:id});
+  const deletePost = async id => {
+      try {
+         await axios.delete(`api/posts/${id}`) 
+         dispatch({type:DELETE_POST,payload:id});
+      } catch (err) {
+         dispatch({type:POST_ERROR,payload:err.response.msg});
+      }
+      
   };
   // Set current
-  const setCurrent = id => {
-       dispatch({type:SET_CURRENT,payload:id})
+  const setCurrent = async id => {
+      try {
+           const res = await axios.get(`api/posts/${id}`); 
+           dispatch({type:SET_CURRENT,payload:res.data});
+           localStorage.setItem('title',res.data.title);
+           localStorage.setItem('content',res.data.content);
+           localStorage.setItem('_id',res.data._id);
+           
+      } catch (err) {
+           dispatch({type:POST_ERROR,payload:err.response.msg});
+      }
   };  
- // Clear current
+  // Clear current
   const clearCurrent = () => {
-      dispatch({type:CLEAR_CURRENT,payload:null});
-  }  
+      dispatch({type:CLEAR_CURRENT});
+      localStorage.removeItem('title');
+      localStorage.removeItem('content');
+      localStorage.removeItem('_id');
+  }
+  // Loading
+  const loading = () => {
+      dispatch({type:LOADING});
+  } 
    return (
        <PostContext.Provider
         value={{
             posts:state.posts,
-            current:state.current,
+            error:state.error,
+            getPosts,
+            addPost,
             setCurrent,
             updatePost,
             deletePost,
-            clearCurrent
+            clearCurrent,
+            loading
         }}
        >
           {props.children}

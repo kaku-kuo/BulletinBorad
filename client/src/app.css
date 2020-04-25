@@ -18,6 +18,12 @@ code {
   margin: 0 10px;
 }
 
+.login,.logout{
+  display: inline-block; 
+}
+.loginicon, .logouticon{
+  font-size: 30px;
+}
 .eachpost{
   width: 500px;
   margin: 20px auto;
@@ -88,4 +94,19 @@ code {
 
 .separateline2{
   margin:0 0;
+}
+.addbtn {
+  position: fixed;
+  bottom: 10%;
+  right: 20%;
+  font-size: 70px;
+}
+
+.registerform{
+  width: 400px;
+}
+
+.registertitle, .logintitle, .newposttitle{
+  font-size: 30px;
+  font-weight: bold;
 }

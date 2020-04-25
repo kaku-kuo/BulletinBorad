@@ -18,8 +18,22 @@ router.get('/', async(req,res) => {
         console.error(err.message);
         res.status(500).send("Server Error")
     }
-   
 });
+
+// @route     GET api/post
+// @desc      Get one post
+// @access    Private 
+router.get('/:id',auth, async(req,res) => {
+
+    try {
+        const post = await Post.findById(req.params.id);
+        res.json(post);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error")
+    }
+});
+
 
 // @route     POST api/posts
 // @desc      Submit post
@@ -33,10 +47,10 @@ router.post('/',[auth,
         return res.status(400).json({errors:errors.array()});
     }
 
-    const { title, content } = req.body;
+    const { title, content,name } = req.body;
 
     try {
-        const nwePost = new Post({title,content,user:req.user.id});
+        const nwePost = new Post({title,content,name,user:req.user.id});
         const post = await nwePost.save();
         res.json(post); 
     } catch (err) {
