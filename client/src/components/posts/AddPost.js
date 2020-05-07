@@ -1,13 +1,15 @@
 import React,{useState,useContext} from 'react';
 import PostContext from '../context/post/postContext';
-
+import AlertContext from '../context/alert/alertContext';
 
 
 const AddPost = (props) => {
 const postContext = useContext(PostContext);
+const alertContext = useContext(AlertContext);
 
 
 const {addPost} = postContext;
+const {setAlert} = alertContext;
 
 const [post, setPost] = useState({title:'',content:'',name:localStorage.name});
 
@@ -21,6 +23,7 @@ const onSubmit = e => {
     e.preventDefault();
     addPost(post);
     props.history.push("/");
+    setAlert("New post added!","success");
 }
     return (
         <div className="border border-grey shadow-sm rounded bg-white eachpost">

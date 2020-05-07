@@ -3,9 +3,12 @@ import PostContext from './postContext';
 import PostReducer from './postReducer';
 import axios from 'axios';
 import {GET_POSTS,
+    GET_POST,
     ADD_POST,
     UPDATE_POST,
     DELETE_POST,
+    ADD_LIKES,
+    MINUS_LIKES,
     POST_ERROR,
     SET_CURRENT,
     CLEAR_CURRENT,
@@ -17,6 +20,7 @@ import {GET_POSTS,
 const PostState = props => {
   const initialState = {
       posts:[],
+      postForMinus:null,
       error:null
   };  
     
@@ -70,10 +74,47 @@ const PostState = props => {
          await axios.delete(`api/posts/${id}`) 
          dispatch({type:DELETE_POST,payload:id});
       } catch (err) {
-         dispatch({type:POST_ERROR,payload:err.response.msg});
+         dispatch({type:POST_ERROR,payload:err.response.data.msg});
       }
       
   };
+
+  // Add likes
+  const addLikes = async post => {
+    const config = {
+        headers:{
+         'Content-Type':'application/json'
+        }
+    }  
+    try {
+       const res = await axios.put(`api/posts/addlikes/${post._id}`,post,config) 
+
+        dispatch({type:ADD_LIKES,payload:res.data});
+     } catch (err) {
+        dispatch({type:POST_ERROR,payload:err.response.msg});
+     }
+      
+  }; 
+
+  // Minus likes
+  const minusLikes = async post => {
+    const config = {
+        headers:{
+         'Content-Type':'application/json'
+        }
+    }
+  
+    try {
+       const res = await axios.put(`api/posts/minuslikes/${post._id}`,post,config) 
+
+        dispatch({type:MINUS_LIKES,payload:res.data});
+        //   console.log(res.data)
+     } catch (err) {
+        dispatch({type:POST_ERROR,payload:err.response.msg});
+     }
+    
+  };  
+
   // Set current
   const setCurrent = async id => {
       try {
@@ -83,6 +124,16 @@ const PostState = props => {
            localStorage.setItem('content',res.data.content);
            localStorage.setItem('_id',res.data._id);
            
+      } catch (err) {
+           dispatch({type:POST_ERROR,payload:err.response.msg});
+      }
+  };  
+
+  // Get post
+  const getPost = async id => {
+      try {
+           const res = await axios.get(`api/posts/${id}`); 
+           dispatch({type:GET_POST,payload:res.data});
       } catch (err) {
            dispatch({type:POST_ERROR,payload:err.response.msg});
       }
@@ -102,12 +153,16 @@ const PostState = props => {
        <PostContext.Provider
         value={{
             posts:state.posts,
+            postForMinus:state.postForMinus,
             error:state.error,
             getPosts,
+            getPost,
             addPost,
             setCurrent,
             updatePost,
             deletePost,
+            addLikes,
+            minusLikes,
             clearCurrent,
             loading
         }}

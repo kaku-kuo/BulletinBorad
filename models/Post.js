@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const PostSchema = mongoose.Schema({
-    user:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"users"
     },
@@ -17,6 +17,14 @@ const PostSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    likes:{
+        type:Number,
+        default:0
+    },
+    likedUser:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users"
+    }],
     date:{
         type:Date,
         default:Date.now

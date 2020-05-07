@@ -1,12 +1,14 @@
 import React, { useContext,useState,useEffect } from 'react';
-import postContext from '../context/post/postContext';
-
+import PostContext from '../context/post/postContext';
+import AlertContext from '../context/alert/alertContext';
 
 const UpdatePost = props => {
     
-    const PostContext = useContext(postContext);
-    
-    const {updatePost,setCurrent,clearCurrent} = PostContext;
+    const postContext = useContext(PostContext);
+    const alertContext = useContext(AlertContext);
+
+    const {updatePost,setCurrent,clearCurrent} = postContext;
+    const {setAlert} = alertContext;
 
     const [post , setPost] = useState({
         _id:null,
@@ -28,7 +30,8 @@ const UpdatePost = props => {
             content:''
            })
        }
-    },[PostContext])
+        // eslint-disable-next-line   
+    },[postContext])
   
 
     const onChange = e => {
@@ -39,6 +42,7 @@ const UpdatePost = props => {
         updatePost(post);
         clearCurrent();
         props.history.push("/");
+        setAlert("Update Successfully", "success");
     }    
 
     return (

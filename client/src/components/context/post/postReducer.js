@@ -1,10 +1,13 @@
 import {GET_POSTS,
+    GET_POST,
     ADD_POST,
     UPDATE_POST,
     DELETE_POST,
+    ADD_LIKES,
     POST_ERROR,
     SET_CURRENT,
     CLEAR_CURRENT,
+    MINUS_LIKES,
  } from '../type';
 
     export default (state,action) => {
@@ -15,7 +18,13 @@ import {GET_POSTS,
                    ...state,
                    posts:action.payload,
                    loading:false
-                }  
+                }
+            case GET_POST:
+                return {
+                   ...state,
+                   postForMinus:action.payload,
+                   loading:false 
+                }   
             case ADD_POST:
                 return {
                    ...state,
@@ -23,6 +32,8 @@ import {GET_POSTS,
                    loading:false
                 }
             case UPDATE_POST:
+            case ADD_LIKES:
+            case MINUS_LIKES:        
                 return {
                    ...state,
                    posts:state.posts.map(post => post._id === action.payload._id ? action.payload:post),
@@ -34,7 +45,7 @@ import {GET_POSTS,
                     posts:state.posts.filter(post => post._id !== action.payload),
                     loading:false
                 }
-            case SET_CURRENT:
+            case SET_CURRENT:    
                 return {
                     ...state
                 }

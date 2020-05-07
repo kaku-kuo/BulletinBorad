@@ -88,6 +88,9 @@ const AuthState = props => {
  //Logout
  const logout = () => {
      dispatch({type:LOGOUT});
+     localStorage.removeItem('title');
+     localStorage.removeItem('content');
+     localStorage.removeItem('_id');
  }
 
  //Clear Errors

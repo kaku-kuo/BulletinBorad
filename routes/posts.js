@@ -50,7 +50,7 @@ router.post('/',[auth,
     const { title, content,name } = req.body;
 
     try {
-        const nwePost = new Post({title,content,name,user:req.user.id});
+        const nwePost = new Post({title,content,name,userId:req.user.id,likedUser:[]});
         const post = await nwePost.save();
         res.json(post); 
     } catch (err) {
@@ -73,7 +73,7 @@ router.put('/:id',auth ,async(req,res) => {
         let post = await Post.findById(req.params.id);
         if(!post) return res.status(404).json({msg:"Post not found"});
         // Make sure user owns post
-        if(post.user.toString() !== req.user.id){
+        if(post.userId.toString() !== req.user.id){
             return res.status(401).json({msg:"Not authorized"});
         }
 
@@ -94,7 +94,7 @@ router.delete('/:id',auth, async (req,res) => {
         let post = await Post.findById(req.params.id);
         if(!post) return res.status(404).json({msg:"Post not found"});
         // Make sure user owns post
-        if(post.user.toString() !== req.user.id){
+        if(post.userId.toString() !== req.user.id){
             return res.status(401).json({msg:"Not authorized"});
         }
 
@@ -107,6 +107,40 @@ router.delete('/:id',auth, async (req,res) => {
     }
 });
 
+// @route     PUT api/post
+// @desc      Add like
+// @access    Private 
+router.put('/addlikes/:id',auth ,async(req,res) => {
+   
+    try {
+        let post = await Post.findById(req.params.id);
+        if(!post) return res.status(404).json({msg:"Post not found"});
+     
+        post = await Post.findByIdAndUpdate(req.params.id,{$inc:{likes:1},$push:{likedUser:req.user.id}},{new:true});
+  
+        res.json(post)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error"); 
+    }
+});
 
-
+// @route     PUT api/post
+// @desc      Minus like
+// @access    Private 
+router.put('/minuslikes/:id',auth ,async(req,res) => {
+    const { likes } = req.body;
+ 
+    try {
+        let post = await Post.findById(req.params.id);
+        if(!post) return res.status(404).json({msg:"Post not found"});
+     
+        post = await Post.findByIdAndUpdate(req.params.id,{likes:likes-1,$pull:{likedUser:req.user.id}},{new:true});
+        
+        res.json(post.likes)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error"); 
+    }
+});
 module.exports = router;
