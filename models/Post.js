@@ -6,8 +6,8 @@ const PostSchema = mongoose.Schema({
         ref:"users"
     },
     title:{
-       type:String,
-       required:true
+        type:String,
+        required:true
     },
     content:{
         type:String,
@@ -24,6 +24,18 @@ const PostSchema = mongoose.Schema({
     likedUser:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"users"
+    }],
+    comment:[{
+        contentofcomment:{
+            type:String
+        },
+        commentofauthor:{
+            type:String
+        },
+        idofauthor:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"users"
+        }
     }],
     date:{
         type:Date,

@@ -3,7 +3,6 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const { check, validationResult } = require('express-validator'); 
 
-const User = require("../models/User");
 const Post = require("../models/Post");
 
 // @route     GET api/posts
@@ -143,4 +142,6 @@ router.put('/minuslikes/:id',auth ,async(req,res) => {
         res.status(500).send("Server Error"); 
     }
 });
+
+
 module.exports = router;

@@ -57,17 +57,22 @@ code {
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-.dropdown-content span{
-  color: black;
+
+.dropdown-content div{
   padding: 10px 10px;
-  text-decoration: none;
-  display: block;
   cursor: pointer;
 }
 
-.dropdown span:hover {background-color: #ddd;}
+.dropdown-content div:hover{
+ background-color:  rgb(32, 120, 244);
+ color: white;
+}
+
+ 
 
 .show{
   display: block;
@@ -135,4 +140,39 @@ code {
 .registertitle, .logintitle, .newposttitle{
   font-size: 30px;
   font-weight: bold;
+}
+
+.commentform{
+  margin: 10px 10px;
+}
+
+.commentinput{
+  border-radius: 20px;
+}
+
+.eachcomment{
+  margin: 10px 0;
+  padding: 10px 10px;
+  display: inline-block;
+  border-radius: 20px;
+  background-color: #f0f2f5
+}
+
+.commentauthor{
+  display: inline-block;
+  color: #385898;
+  font-weight: bold;
+}
+
+.loginforcomment{
+  text-align: center;
+  margin: 5px 0;
+}
+
+
+@media (max-width:710px){
+  .navbar{
+    display: block;
+    text-align: center;
+  }
 }

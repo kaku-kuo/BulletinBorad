@@ -2,6 +2,7 @@ import React from 'react';
 import './bootstrap.css';
 import './app.css';
 import PostState from './components/context/post/PostState';
+import CommentState from './components/context/comment/CommentState';
 import AuthState from './components/context/auth/AuthState';
 import AlertState from './components/context/alert/AlertState';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -27,11 +28,13 @@ if(localStorage.token){
 }
 
 function App() {
+
   return (
 <AlertState>    
  <AuthState>   
   <PostState>
-   <BrowserRouter> 
+   <CommentState> 
+    <BrowserRouter> 
      <div> 
       <Navbar/>
       <Alert/>
@@ -44,7 +47,8 @@ function App() {
         <PrivateRoute exact path="/:id" component={UpdatePost}/>
       </Switch>
      </div>
-   </BrowserRouter> 
+    </BrowserRouter> 
+   </CommentState>
   </PostState>  
  </AuthState>
 </AlertState>

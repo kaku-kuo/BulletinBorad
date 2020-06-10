@@ -8,11 +8,13 @@ const Navbar = () => {
 const authContext = useContext(AuthContext);
 const alertContext = useContext(AlertContext);
 
-const{logout,isAuthenticated,user,loadUser} = authContext;
+const{logout,isAuthenticated,user,loadUser,token} = authContext;
 const{setAlert} = alertContext;
 
 useEffect(() => {
-   loadUser();
+  if(token){
+     loadUser();
+  }   
   //eslint-disable-next-line 
 },[]);
 

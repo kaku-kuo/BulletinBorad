@@ -129,7 +129,7 @@ const PostState = props => {
       }
   };  
 
-  // Get post
+  // Get a post
   const getPost = async id => {
       try {
            const res = await axios.get(`api/posts/${id}`); 
