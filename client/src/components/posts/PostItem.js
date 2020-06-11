@@ -255,7 +255,7 @@ if(sec < 60){
           :<div/>}
           <div className="container">
           {showComments ? 
-          comment.map(each => (          
+           comment.map(each => (          
            <CommentItem key={each._id} comment={each}/>         
           ))          
           :
