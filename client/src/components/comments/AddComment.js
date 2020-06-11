@@ -29,7 +29,7 @@ const AddComment = ({postid}) => {
     useEffect(() => {
       getPosts();
     //eslint-disable-next-line   
-    },[handleSubmit])
+    },[comment])
 
     return (
         <div className="form-group commentform">

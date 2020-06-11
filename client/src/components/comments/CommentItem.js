@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AuthContext from '../context/auth/authContext';
 import CommentContext from '../context/comment/commentContext';
@@ -11,7 +11,7 @@ const postContext = useContext(PostContext);
 
 const {user} = authContext;
 const {deleteComment,updateComment} = commentContext;
-const {posts} = postContext;
+const {posts,getPosts} = postContext;
 
 
 const [dropdown,setDropdown] = useState(false);
@@ -68,6 +68,11 @@ const handleDeleteComment = () => {
   setDropdownClass("dropdown-content");
   deleteComment(post._id,_id);
 };
+
+useEffect(() => {
+ getPosts();
+// eslint-disable-next-line
+},[dropdownClass])
 
 const handleKeyPress = e => {
   if(e.keyCode === 27){

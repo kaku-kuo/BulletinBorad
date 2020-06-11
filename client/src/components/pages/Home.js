@@ -12,7 +12,7 @@ const { getPosts,posts} = postContext;
 useEffect(() => {
   getPosts();
   // eslint-disable-next-line
-},[])
+},[posts.length])
 
     return (
         <div>

@@ -148,8 +148,6 @@ code {
 
 .commentinput{
   border-radius: 20px;
-  -webkit-user-select: text;
-  user-select: text;
 }
 
 .eachcomment{
