@@ -1,4 +1,4 @@
-import React,{useState,useContext,useEffect} from 'react';
+import React,{useState,useContext} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AuthContext from '../context/auth/authContext';
 import CommentContext from '../context/comment/commentContext';
@@ -45,6 +45,9 @@ const handleUpdateComment = () => {
     setOptionClass('threedots ml-2 d-none');
     setDropdownClass('dropdown-content d-none');
     setCommentForUpdate(contentofcomment); 
+    setTimeout(() => {
+     getPosts();
+    },3000)
   }
 };
 
@@ -68,11 +71,6 @@ const handleDeleteComment = () => {
   setDropdownClass("dropdown-content");
   deleteComment(post._id,_id);
 };
-
-useEffect(() => {
- getPosts();
-// eslint-disable-next-line
-},[showUpdate,dropdown])
 
 const handleKeyPress = e => {
   if(e.keyCode === 27){
