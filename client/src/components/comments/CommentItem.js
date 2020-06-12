@@ -72,7 +72,7 @@ const handleDeleteComment = () => {
 useEffect(() => {
  getPosts();
 // eslint-disable-next-line
-},[dropdownClass])
+},[showUpdate,dropdown])
 
 const handleKeyPress = e => {
   if(e.keyCode === 27){

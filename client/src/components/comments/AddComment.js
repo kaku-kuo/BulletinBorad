@@ -1,15 +1,14 @@
-import React,{useState,useContext,useEffect} from 'react';
-import PostContext from '../context/post/postContext';
+import React,{useState,useContext} from 'react';
 import AuthContext from '../context/auth/authContext';
 import CommentContext from '../context/comment/commentContext';
 
 
 const AddComment = ({postid}) => {
-    const postContext = useContext(PostContext);
+    
     const authContext = useContext(AuthContext);
     const commentContext = useContext(CommentContext);
 
-    const {getPosts} = postContext;
+    
     const {user} = authContext;
     const {addComment} = commentContext;
 
@@ -19,18 +18,14 @@ const AddComment = ({postid}) => {
     const handelChange = e => {
       setComment({...comment,[e.target.name]:e.target.value,commentofauthor:user.name});
     }
-
+    
     const handleSubmit = e => {
       e.preventDefault();
       addComment(postid,comment);
-      setComment({contentofcomment:''})
+      setComment({contentofcomment:''});
     }
     
-    useEffect(() => {
-      getPosts();
-    //eslint-disable-next-line   
-    },[comment])
-
+    
     return (
         <div className="form-group commentform">
          <form onSubmit={handleSubmit}>

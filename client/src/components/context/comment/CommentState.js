@@ -10,7 +10,9 @@ import {
 } from '../type';
 
 const CommentState = props => {
-   const initialSteat = {}
+   const initialSteat = {
+     comments:null
+   }
 
    const [state , dispatch] = useReducer(CommentReducer,initialSteat);
 
@@ -42,7 +44,7 @@ const body = {
 }
   try {
     const res = await axios.put(`api/comments/updatecomment/${id}`,body,config);
-    dispatch({typr:UPDATE_COMMENT,payload:res.data})
+    dispatch({typr:UPDATE_COMMENT,payload:res.data});
   } catch (err) {
     dispatch({type:POST_ERROR,payload:err.response.msg});
   }

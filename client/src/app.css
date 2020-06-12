@@ -176,3 +176,9 @@ code {
     text-align: center;
   }
 }
+
+@media (max-width:414px){
+  .navbar{
+    width: 500px;
+  }
+}
