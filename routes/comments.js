@@ -36,8 +36,8 @@ router.put('/updatecomment/:id',auth ,async(req,res) => {
 try {
     let post = await Post.findById(req.params.id);
     if(!post) return res.status(404).json({msg:"Post not found"}); 
-    post = await Post.updateOne({_id:req.params.id,"comment._id":idforupdate},{$set:{"comment.$.contentofcomment":contentforupdate}},{new:true});
-    res.json(post);
+    post = await Post.updateOne({_id:req.params.id,"comment._id":idforupdate},{$set:{"comment.$.contentofcomment":contentforupdate}});
+    res.json(post.operationTime);
 } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error"); 

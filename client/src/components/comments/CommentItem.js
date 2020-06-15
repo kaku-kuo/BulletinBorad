@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AuthContext from '../context/auth/authContext';
 import CommentContext from '../context/comment/commentContext';
@@ -10,7 +10,7 @@ const commentContext = useContext(CommentContext);
 const postContext = useContext(PostContext);
 
 const {user} = authContext;
-const {deleteComment,updateComment} = commentContext;
+const {deleteComment,updateComment,forUpdate} = commentContext;
 const {posts,getPosts} = postContext;
 
 
@@ -44,10 +44,7 @@ const handleUpdateComment = () => {
     setShowUpdate(true);   
     setOptionClass('threedots ml-2 d-none');
     setDropdownClass('dropdown-content d-none');
-    setCommentForUpdate(contentofcomment); 
-    setTimeout(() => {
-     getPosts();
-    },3000)
+    setCommentForUpdate(contentofcomment);      
   }
 };
 
@@ -55,10 +52,19 @@ const handleChange = e => {
   setCommentForUpdate(e.target.value);
 };
 
+useEffect(() => {
+  getPosts();
+  //eslint-disable-next-line 
+},[forUpdate])
+
 const handleSubmit = e => {
   e.preventDefault();
   let post = posts.find(post => post.comment.find(each => each._id === _id));
-  updateComment(post._id,_id,commentForUpdate);
+  if(commentForUpdate === ''){
+    deleteComment(post._id,_id);
+  }else{
+    updateComment(post._id,_id,commentForUpdate);
+  }
   setShowUpdate(false);
   setDropdown(false);
   setOptionClass('threedots ml-2');
@@ -80,8 +86,6 @@ const handleKeyPress = e => {
     setDropdownClass('dropdown-content');
   }
 }
-
-
 
 
     return (

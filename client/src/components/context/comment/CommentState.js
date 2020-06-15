@@ -11,7 +11,8 @@ import {
 
 const CommentState = props => {
    const initialSteat = {
-     comments:null
+     comments:null,
+     forUpdate:""
    }
 
    const [state , dispatch] = useReducer(CommentReducer,initialSteat);
@@ -44,7 +45,7 @@ const body = {
 }
   try {
     const res = await axios.put(`api/comments/updatecomment/${id}`,body,config);
-    dispatch({typr:UPDATE_COMMENT,payload:res.data});
+    dispatch({type:UPDATE_COMMENT,payload:res.data});
   } catch (err) {
     dispatch({type:POST_ERROR,payload:err.response.msg});
   }
@@ -73,6 +74,7 @@ const commentID = {
         <CommentContext.Provider
         value={{
             comments:state.comments,
+            forUpdate:state.forUpdate,
             addComment,
             updateComment,
             deleteComment

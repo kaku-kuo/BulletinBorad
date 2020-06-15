@@ -106,9 +106,7 @@ const PostState = props => {
   
     try {
        const res = await axios.put(`api/posts/minuslikes/${post._id}`,post,config) 
-
         dispatch({type:MINUS_LIKES,payload:res.data});
-        //   console.log(res.data)
      } catch (err) {
         dispatch({type:POST_ERROR,payload:err.response.msg});
      }
