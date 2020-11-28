@@ -9,7 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import {BrowserRouter,Switch,Route } from 'react-router-dom';
+import { BrowserRouter,Switch,Route } from 'react-router-git initdom';
 import Navbar from '../src/components/layout/Navbar'
 import About from './components/pages/About';
 import Home from './components/pages/Home';

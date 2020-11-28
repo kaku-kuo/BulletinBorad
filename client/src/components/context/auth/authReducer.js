@@ -1,12 +1,12 @@
 import {
-     REGISTER_SUCCESS,
-     REGISTER_FAIL,
-     LOGIN_SUCCESS,
-     LOGIN_FAIL,
-     CLEAR_ERRORS,
-     USER_LOADED,
-    AUTH_ERROR,
-    LOGOUT
+   REGISTER_SUCCESS,
+   REGISTER_FAIL,
+   LOGIN_SUCCESS,
+   LOGIN_FAIL,
+   CLEAR_ERRORS,
+   USER_LOADED,
+   AUTH_ERROR,
+   LOGOUT
 } from '../type';
 
 export default (state,action) => {

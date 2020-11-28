@@ -1,28 +1,21 @@
-import React,{useState,useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import PostContext from '../context/post/postContext';
 import AlertContext from '../context/alert/alertContext';
 
 
-const AddPost = (props) => {
+const AddPost = ({ history }) => {
 const postContext = useContext(PostContext);
 const alertContext = useContext(AlertContext);
-
-
-const {addPost} = postContext;
-const {setAlert} = alertContext;
-
-const [post, setPost] = useState({title:'',content:'',name:localStorage.name});
-
-
-
-const onChange = e => {
-    setPost({...post,[e.target.name]:e.target.value});
-}
+const { addPost } = postContext;
+const { setAlert } = alertContext;
+const [title, setTitle] = useState("");
+const [content, setContent] = useState("");
+const [name] = useState(localStorage.name);
 
 const onSubmit = e => {
     e.preventDefault();
-    addPost(post);
-    props.history.push("/");
+    addPost({ title, content, name});
+    history.push("/");
     setAlert("New post added!","success");
 }
     return (
@@ -34,10 +27,10 @@ const onSubmit = e => {
           </div>  
           <form onSubmit={onSubmit}>
            <div className="posttitle mx-2 my-2">
-             <input className="form-control" name="title" onChange={onChange}/>
+             <input className="form-control" name="title" value={title} onChange={e => setTitle(e.target.value)}/>
            </div>
            <div className="postcontent mt-3">
-            <textarea className="form-control" name="content" rows="8" onChange={onChange}/>
+            <textarea className="form-control" name="content" value={content} rows="8" onChange={e => setContent(e.target.value)}/>
            </div>
            <div className="text-center mt-3">
             <input className="btn btn-primary btn-sm" type="submit" value="Submit"/>

@@ -1,5 +1,5 @@
-import React,{useState,useContext,useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import postContext from '../context/post/postContext';
 import authContext from '../context/auth/authContext';
@@ -8,21 +8,21 @@ import AddComment from '../comments/AddComment';
 import CommentItem from '../comments/CommentItem';
 
 
-const PostItem = ({post}) => {
+const PostItem = ({ post }) => {
 const PostContext = useContext(postContext);
 const AuthContext = useContext(authContext);
 const AlertContext = useContext(alertContext);
 
-const {deletePost,addLikes,minusLikes,getPost,postForMinus} = PostContext;
-const {user} = AuthContext;
-const {setAlert} = AlertContext;
-const {title,content,name,_id,userId,likes,likedUser,comment} = post;
+const { deletePost, addLikes, minusLikes, getPost, postForMinus } = PostContext;
+const { user } = AuthContext;
+const { setAlert } = AlertContext;
+const { title, content, name, _id, userId, likes, likedUser, comment } = post;
 
-const [dropdown,setDropdown] = useState(false);
-const [showComments,setShowComments] = useState(false);
-const [likeBtn,setLikeBtn] = useState(true);
-const [dropdownClass,setDropdownClass] = useState('dropdown-content');
-const [numOfLikes,setNumOfLikes] = useState(likes);
+const [dropdown, setDropdown] = useState(false);
+const [showComments, setShowComments] = useState(false);
+const [likeBtn, setLikeBtn] = useState(true);
+const [dropdownClass, setDropdownClass] = useState('dropdown-content');
+const [numOfLikes, setNumOfLikes] = useState(likes);
 
 useEffect(() => {
 if(localStorage.token && user !== null){  
@@ -155,59 +155,55 @@ if(sec < 60){
   ${showHours > 12 ?hoursOver:showHours}:${date.getMinutes() < 10 ? `0${date.getMinutes()}`:date.getMinutes()} ${showHours > 12 ? "PM":"AM"}`;        
 }
 
-  const handlePostDelete = () => {
-        deletePost(_id);
-        setAlert("Post Removed","success");
-        window.scrollTo( 0, 0 );   
-  }
+const handlePostDelete = () => {
+    deletePost(_id);
+    setAlert("Post Removed","success");
+    window.scrollTo( 0, 0 );   
+};
 
   
-  const handleLikeBtn = () => {
-    
-    if(localStorage.token){
-      if(!likeBtn){
-         getPost(post._id);
-         setLikeBtn(true);
-         setNumOfLikes(numOfLikes-1); 
-      }else{
-         setLikeBtn(false);
-         setNumOfLikes(numOfLikes+1);
-         if(numOfLikes === likes || numOfLikes > likes){
-         addLikes(post);
-        }
-      } 
-    }else{
-      setAlert("Please login to like the post","warning");
-    }
-
-  }
-
-    useEffect(() => {
-      if(postForMinus !== null){
-         minusLikes(postForMinus);
+const handleLikeBtn = () => {   
+  if(localStorage.token){
+    if(!likeBtn){
+      getPost(post._id);
+      setLikeBtn(true);
+      setNumOfLikes(numOfLikes-1); 
+  }else{
+      setLikeBtn(false);
+      setNumOfLikes(numOfLikes+1);
+        if(numOfLikes === likes || numOfLikes > likes){
+        addLikes(post);
       }
-      //eslint-disable-next-line  
-    },[postForMinus]);
+    } 
+  }else{
+    setAlert("Please login to like the post","warning");
+  }
+};
+
+useEffect(() => {
+  if(postForMinus !== null){
+    minusLikes(postForMinus);
+  }
+//eslint-disable-next-line  
+},[postForMinus]);
    
-  const dropdownClick = () => {
-      if(!dropdown){
-        setDropdown(true);
-        setDropdownClass("dropdown-content show");
-      }else{
-        setDropdown(false);
-        setDropdownClass("dropdown-content");
-      }
-  };
-
-  const handleComment = () => {
-        if(!showComments){
-          setShowComments(true)
-        }else{
-          setShowComments(false)
-        }
-        
+const dropdownClick = () => {
+  if(!dropdown){
+    setDropdown(true);
+    setDropdownClass("dropdown-content show");
+  }else{
+    setDropdown(false);
+    setDropdownClass("dropdown-content");
   }
+};
 
+const handleComment = () => {
+  if(!showComments){
+    setShowComments(true)
+  }else{
+    setShowComments(false)
+  }
+};
     return (
        <div className="border border-grey shadow-sm rounded bg-white eachpost">       
          <div className="container">
@@ -226,8 +222,7 @@ if(sec < 60){
           :
           <div className="posttitle mx-2 my-2">
             <h3><strong>{title}</strong></h3>
-          </div>
-          }
+          </div>}
 
           <div className="postcontent mt-3">
             <p>{content}</p>
@@ -256,8 +251,7 @@ if(sec < 60){
           <div className="container">
           {showComments ? 
            comment.map(each => (          
-           <CommentItem key={each._id} comment={each}/>         
-          ))          
+           <CommentItem key={each._id} comment={each}/>))          
           :
           <div/>}
           </div>

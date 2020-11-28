@@ -1,25 +1,28 @@
-import React,{useContext} from 'react';
-import {Link} from 'react-router-dom';
+import React,{ useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PostItem from './PostItem';
+import Preloader from '../layout/Preloader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostContext from '../context/post/postContext';
 
 const Posts = () => {
-    const postContext = useContext(PostContext)
+const postContext = useContext(PostContext)
+const { posts, getPosts } = postContext;
 
-    const {posts} = postContext;
+useEffect(() => {
+ getPosts();
+//eslint-disable-next-line
+},[]);
+
     return (                             
         <div>          
           {posts.length === 0 ?
-            <div className="text-center mt-5">
-              <div className="display-4 font-weight-bold">Loading...</div>
-              <div className="spinner-grow" role="status"/>
-            </div>            
+          <Preloader/>  
           :                                    
           posts.map(post => (                                           
-             <PostItem key={post._id} post={post}/>                    
+            <PostItem key={post._id} post={post}/>                    
          ))}                                           
-         <Link to="/addpost"><FontAwesomeIcon className="addbtn" icon={['fas', 'plus-circle']}/></Link>                     
+         <Link to="/addpost"><FontAwesomeIcon className="addbtn" icon={['fas', 'plus-circle']}/></Link>                    
         </div>                                  
     )
 }

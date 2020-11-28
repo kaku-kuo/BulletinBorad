@@ -47,11 +47,13 @@ import {GET_POSTS,
                 }
             case SET_CURRENT:    
                 return {
-                    ...state
+                    ...state,
+                    current:action.payload
                 }
             case CLEAR_CURRENT:
                 return {
-                    ...state
+                    ...state,
+                    current:null
                 }
             case POST_ERROR:
                 return {
