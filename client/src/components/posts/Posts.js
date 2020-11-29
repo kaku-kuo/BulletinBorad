@@ -4,15 +4,19 @@ import PostItem from './PostItem';
 import Preloader from '../layout/Preloader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostContext from '../context/post/postContext';
+import CommentContext from '../context/comment/commentContext';
 
 const Posts = () => {
-const postContext = useContext(PostContext)
-const { posts, getPosts } = postContext;
+const postContext = useContext(PostContext);
+const commentContext = useContext(CommentContext);
+const { posts, loading, getPosts } = postContext;
+const { comments, commentUpdate, clearComment } = commentContext;
 
 useEffect(() => {
  getPosts();
+ clearComment();
 //eslint-disable-next-line
-},[]);
+},[loading, comments ,commentUpdate]);
 
     return (                             
         <div>          

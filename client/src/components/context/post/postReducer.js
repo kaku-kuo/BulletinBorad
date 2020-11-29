@@ -8,6 +8,7 @@ import {GET_POSTS,
     SET_CURRENT,
     CLEAR_CURRENT,
     MINUS_LIKES,
+    LOADING
  } from '../type';
 
     export default (state,action) => {
@@ -16,14 +17,12 @@ import {GET_POSTS,
             case GET_POSTS:
                 return {
                    ...state,
-                   posts:action.payload,
-                   loading:false
+                   posts:action.payload
                 }
             case GET_POST:
                 return {
                    ...state,
-                   postForMinus:action.payload,
-                   loading:false 
+                   postForMinus:action.payload
                 }   
             case ADD_POST:
                 return {
@@ -59,7 +58,12 @@ import {GET_POSTS,
                 return {
                     ...state,
                     error:action.payload
-                }        
+                }       
+            case LOADING:
+                return {
+                    ...state,
+                    loading:true
+                }     
               default:
                 return state;
           }

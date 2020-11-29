@@ -4,7 +4,7 @@ import AuthContext from '../context/auth/authContext';
 import CommentContext from '../context/comment/commentContext';
 import PostContext from '../context/post/postContext';
 
-const CommentItem = ({ comment:{ contentofcomment, commentofauthor, idofauthor,_id } }) => {
+const CommentItem = ({ comment:{ contentofcomment, commentofauthor, idofauthor, _id } }) => {
 const authContext = useContext(AuthContext);
 const commentContext = useContext(CommentContext);
 const postContext = useContext(PostContext);
@@ -48,10 +48,6 @@ const handleUpdateComment = () => {
   };
 };
 
-const handleChange = e => {
-  setCommentForUpdate(e.target.value);
-};
-
 useEffect(() => {
   getPosts();
   //eslint-disable-next-line 
@@ -63,7 +59,7 @@ const handleSubmit = e => {
   if(commentForUpdate === ''){
     deleteComment(post._id, _id);
   }else{
-    updateComment(post._id, _id, commentForUpdate);
+    updateComment(post._id, { idforupdate:_id, contentforupdate:commentForUpdate });
   }
   setShowUpdate(false);
   setDropdown(false);
@@ -97,7 +93,7 @@ const handleKeyPress = e => {
          <div className="form-group w-100 commentform">
          <form onSubmit={handleSubmit}>
           <input className="form-control commentinput" name="contentofcomment" value={commentForUpdate}
-          onChange={handleChange}
+          onChange={e => setCommentForUpdate(e.target.value)}
           onKeyDown={handleKeyPress}       
           ref={input => input && input.focus()}  
           />   

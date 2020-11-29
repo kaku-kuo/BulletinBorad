@@ -1,7 +1,8 @@
 import {
     ADD_COMMENT,
     UPDATE_COMMENT,
-    DELETE_COMMENT
+    DELETE_COMMENT,
+    CLEAR_COMMENT
   } from '../type';
 
 export default (state,action) => {
@@ -15,8 +16,14 @@ export default (state,action) => {
     case UPDATE_COMMENT:
         return {
             ...state,
-            forUpdate:action.payload
-        }    
+            commentUpdate:action.payload
+        }
+    case CLEAR_COMMENT:
+        return {
+            ...state,
+            comments:null,
+            commentUpdate:null  
+        }        
     default:
        return state
     }      

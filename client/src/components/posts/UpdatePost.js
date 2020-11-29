@@ -21,8 +21,7 @@ useEffect(()=> {
 if(current){
   setId(current._id);
   setTitle(current.title);
-  setContent(current.content); 
-  console.log("set 3 fields")  
+  setContent(current.content);   
 };
 // eslint-disable-next-line   
 },[current])

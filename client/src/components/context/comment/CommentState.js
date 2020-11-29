@@ -6,13 +6,14 @@ import {
   ADD_COMMENT,
   UPDATE_COMMENT,
   DELETE_COMMENT,
+  CLEAR_COMMENT,
   POST_ERROR
 } from '../type';
 
 const CommentState = props => {
    const initialSteat = {
      comments:null,
-     forUpdate:""
+     commentUpdate:null
 }
 
 const [state , dispatch] = useReducer(CommentReducer, initialSteat);
@@ -33,18 +34,14 @@ const config = {
 } 
 
 //Update comment
-const updateComment = async(id, commentId, updateContent) => {
+const updateComment = async(id, formData) => {
 const config = {
   headers:{
       'Content-Type':'application/json'
     }
 }    
-const body = {
-  "idforupdate":commentId,
-  "contentforupdate":updateContent
-}
   try {
-    const res = await axios.put(`api/comments/updatecomment/${id}`, body, config);
+    const res = await axios.put(`api/comments/updatecomment/${id}`, formData, config);
     dispatch({ type:UPDATE_COMMENT, payload:res.data });
   } catch (err) {
     dispatch({ type:POST_ERROR, payload:err.response.msg });
@@ -70,14 +67,22 @@ const commentID = {
 
 }
 
+
+const clearComment = () => {
+  dispatch({ type:CLEAR_COMMENT })
+}
+
+
+
     return (
         <CommentContext.Provider
         value={{
             comments:state.comments,
-            forUpdate:state.forUpdate,
+            commentUpdate:state.commentUpdate,
             addComment,
             updateComment,
-            deleteComment
+            deleteComment,
+            clearComment
         }}
         >
         {props.children}

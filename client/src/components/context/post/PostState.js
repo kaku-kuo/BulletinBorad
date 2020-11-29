@@ -22,7 +22,8 @@ const PostState = props => {
       posts:[],
       postForMinus:null,
       current:null,
-      error:null
+      error:null,
+      loading:true
   };  
     
   const [ state, dispatch ] = useReducer(PostReducer, initialState);
@@ -51,6 +52,7 @@ const PostState = props => {
        } catch (err) {
            dispatch({ ype:POST_ERROR, payload:err.response.msg });
        }
+       setLoading();
   };
 
   // Update post
@@ -67,7 +69,7 @@ const PostState = props => {
      } catch (err) {
         dispatch({ type:POST_ERROR, payload:err.response.msg });
      }
-      
+     setLoading();
   }; 
 
   // Delete post
@@ -78,7 +80,7 @@ const PostState = props => {
       } catch (err) {
          dispatch({ type:POST_ERROR, payload:err.response.data.msg });
       }
-      
+      setLoading();
   };
 
   // Add likes
@@ -95,7 +97,7 @@ const PostState = props => {
      } catch (err) {
         dispatch({ type:POST_ERROR, payload:err.response.msg });
      }
-      
+     setLoading();
   }; 
 
   // Minus likes
@@ -112,7 +114,7 @@ const PostState = props => {
      } catch (err) {
         dispatch({ type:POST_ERROR, payload:err.response.msg });
      }
-    
+     setLoading();
   };  
 
   // Set current
@@ -142,7 +144,7 @@ const PostState = props => {
       localStorage.removeItem('_id');
   }
   // Loading
-  const loading = () => {
+  const setLoading = () => {
       dispatch({ type:LOADING });
   } 
    return (
@@ -161,7 +163,7 @@ const PostState = props => {
             addLikes,
             minusLikes,
             clearCurrent,
-            loading
+            setLoading
         }}
        >
           {props.children}
